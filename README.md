@@ -32,6 +32,6 @@ npm run dev
 
 Para testar, acesse a URL abaixo no navegador ou em um cliente HTTP
 
-http://localhost:3000/api/image?title=titulo&subtitle=subtitulo&day=2025&address=ruaexemplo&city=guarapuava
+http://localhost:3000/image?title=titulo&subtitle=subtitulo&day=2025&address=ruaexemplo&city=guarapuava
 
 Pronto! A imagem será gerada automaticamente com os parâmetros informados
