@@ -10,6 +10,7 @@ export type eventData = {
   city: string;
   day: string;
   hour: string;
+  media: string;
 };
 
 router.get("/", async (req, res) => {
