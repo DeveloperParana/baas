@@ -21,7 +21,7 @@ npm install
 3° Compile e inicie o servidor
 
 ```bash
-tsc && cp -r src/fonts dist/ && node dist/index.js
+npm run dev
 ```
 
 > o servidor rodará em localhost:3000
