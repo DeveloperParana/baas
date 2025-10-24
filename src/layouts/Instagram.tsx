@@ -1,4 +1,3 @@
-// src/components/Linkedin.tsx
 import React from "react";
 import type { eventData } from "../routes/image.js";
 
