@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc && cp -r src/fonts dist/ &&  node dist/index.js"
+    "dev": "tsc && cp -r src/assets dist/ &&  node dist/index.js"
   },
   "keywords": [],
   "author": "",

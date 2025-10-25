@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 
 export async function generateImage(event: eventData) {
   const fontData = await readFile(
-    join(__dirname, "../fonts/Inter-Regular.ttf")
+    join(__dirname, "../assets/fonts/Inter-Regular.ttf")
   );
 
   const media = event.media || "default";
