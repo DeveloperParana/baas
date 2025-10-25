@@ -4,7 +4,7 @@ export const MEDIA_SIZES = {
     width: 500,
   },
   instagram: {
-    height: 1350,
+    height: 1080,
     width: 1080,
   },
   stories: {
