@@ -11,7 +11,7 @@ export default function InstagramImage({ event }: { event: eventData }) {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "start",
+    textAlign: "center",
     color: "white",
     fontFamily: "Inter, sans-serif",
     overflowWrap: "break-word",
@@ -23,8 +23,23 @@ export default function InstagramImage({ event }: { event: eventData }) {
     backgroundRepeat: "no-repeat",
   };
 
+  const infoContainer: React.CSSProperties = {
+    width: "880px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    color: "white",
+  };
+
+  const titleStyle: React.CSSProperties = {
+    fontSize: 96,
+  };
+
   const text: React.CSSProperties = {
     margin: 0,
+    fontSize: 36,
   };
 
   const logoStyle: React.CSSProperties = {
@@ -32,17 +47,24 @@ export default function InstagramImage({ event }: { event: eventData }) {
   };
 
   const containerText: React.CSSProperties = {
-    width: "500px",
+    width: "880px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: "10px",
+    gap: "48px",
   };
 
   return (
     <div style={containerStyle}>
       <div style={containerText}>
+        <h1 style={titleStyle}>{event.title}</h1>
+        <h3 style={text}>{event.subtitle}</h3>
+        <div style={infoContainer}>
+          <p style={text}>{event.date}</p>
+          <p style={text}>{event.address}</p>
+          <p style={text}>{event.city}</p>
+        </div>
         <img
           src={asset("/devpr-logo.png")}
           width={445}
@@ -50,11 +72,6 @@ export default function InstagramImage({ event }: { event: eventData }) {
           alt="Logo"
           style={logoStyle}
         />
-        <h1 style={text}>{event.title}</h1>
-        <h3 style={text}>{event.subtitle}</h3>
-        <p style={text}>{event.day}</p>
-        <p style={text}>{event.address}</p>
-        <p style={text}>{event.city}</p>
       </div>
     </div>
   );
