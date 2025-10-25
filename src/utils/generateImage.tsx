@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export async function generateImage(event: eventData) {
-  const media = event.media || "default";
+  const media = event.media || "instagram";
   const size = MEDIA_SIZES[media as keyof typeof MEDIA_SIZES];
 
   const module = await import(`../layouts/${capitalize(media)}.js`);
