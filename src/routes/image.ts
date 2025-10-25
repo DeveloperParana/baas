@@ -8,8 +8,7 @@ export type eventData = {
   subtitle: string;
   address: string;
   city: string;
-  day: string;
-  hour: string;
+  date: string;
   media: string;
 };
 

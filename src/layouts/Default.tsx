@@ -45,7 +45,7 @@ export default function DefaultImage({ event }: { event: eventData }) {
         />
         <h1 style={text}>{event.title}</h1>
         <h3 style={text}>{event.subtitle}</h3>
-        <p style={text}>{event.day}</p>
+        <p style={text}>{event.date}</p>
         <p style={text}>{event.address}</p>
         <p style={text}>{event.city}</p>
       </div>
