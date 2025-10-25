@@ -11,10 +11,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export async function generateImage(event: eventData) {
-  const fontData = await readFile(
-    join(__dirname, "../assets/fonts/Inter-Regular.ttf")
-  );
-
   const media = event.media || "default";
   const size = MEDIA_SIZES[media as keyof typeof MEDIA_SIZES];
 
@@ -27,8 +23,16 @@ export async function generateImage(event: eventData) {
     fonts: [
       {
         name: "Inter",
-        data: fontData,
+        data: await readFile(
+          join(__dirname, "../assets/fonts/Inter-Regular.ttf")
+        ),
         weight: 400,
+        style: "normal",
+      },
+      {
+        name: "Inter",
+        data: await readFile(join(__dirname, "../assets/fonts/Inter-Bold.ttf")),
+        weight: 700,
         style: "normal",
       },
     ],
