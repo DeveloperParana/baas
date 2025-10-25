@@ -1,10 +1,10 @@
 // src/components/Linkedin.tsx
 import React from "react";
 import type { eventData } from "../routes/image.js";
+import { asset } from "../utils/assets.js";
 
 export default function InstagramImage({ event }: { event: eventData }) {
   const containerStyle: React.CSSProperties = {
-    background: "#083A1B",
     width: "1080px",
     height: "1920px",
     display: "flex",
@@ -16,6 +16,11 @@ export default function InstagramImage({ event }: { event: eventData }) {
     fontFamily: "Inter, sans-serif",
     overflowWrap: "break-word",
     wordBreak: "break-word",
+
+    backgroundImage: `url(${asset("/backgrounds/stories.png")})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
   };
 
   const text: React.CSSProperties = {
@@ -23,7 +28,7 @@ export default function InstagramImage({ event }: { event: eventData }) {
   };
 
   const logoStyle: React.CSSProperties = {
-    width: "150px",
+    width: "445px",
   };
 
   const containerText: React.CSSProperties = {
@@ -39,7 +44,9 @@ export default function InstagramImage({ event }: { event: eventData }) {
     <div style={containerStyle}>
       <div style={containerText}>
         <img
-          src="https://devpr.org/assets/images/icone_dev_pr.svg"
+          src={asset("/devpr-logo.png")}
+          width={445}
+          height={105}
           alt="Logo"
           style={logoStyle}
         />
