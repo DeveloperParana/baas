@@ -1,21 +1,31 @@
 import { Router } from "express";
 import { generateImage } from "../utils/generateImage.js";
+import type { EventData, Talk } from "../types/event.types.js";
 
 const router = Router();
 
-export type eventData = {
-  title: string;
-  subtitle: string;
-  address: string;
-  city: string;
-  date: string;
-  media: string;
-};
+function parseEventData(query: EventData): EventData {
+  let talks: Talk[] | undefined;
+
+  if (query.talks) {
+    talks = JSON.parse(String(query.talks));
+  }
+
+  return {
+    title: query.title ?? "",
+    subtitle: query.subtitle ?? "",
+    date: query.date ?? "",
+    address: query.address ?? "",
+    city: query.city ?? "",
+    media: query.media ?? "instagram",
+    talks: talks ?? [],
+  };
+}
 
 router.get("/", async (req, res) => {
   try {
-    const qs = req.query;
-    const pngBuffer = await generateImage(qs as eventData);
+    const qs = parseEventData(req.query as EventData);
+    const pngBuffer = await generateImage(qs as EventData);
 
     res.setHeader("Content-Type", "image/png");
     res.send(pngBuffer);
