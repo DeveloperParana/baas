@@ -1,21 +1,13 @@
 // src/components/Linkedin.tsx
 import React from "react";
-import type { eventData } from "../routes/image.js";
 import { asset } from "../utils/assets.js";
+import type { EventData } from "../types/event.types.js";
+import FlexContainer from "../components/FlexContainer.js";
 
-export default function InstagramImage({ event }: { event: eventData }) {
+export default function Instagram({ event }: { event: EventData }) {
   const containerStyle: React.CSSProperties = {
-    width: "1080px",
-    height: "1080px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "start",
     color: "white",
     fontFamily: "Inter, sans-serif",
-    overflowWrap: "break-word",
-    wordBreak: "break-word",
 
     backgroundImage: `url(${asset("/backgrounds/instagram.png")})`,
     backgroundSize: "cover",
@@ -42,22 +34,9 @@ export default function InstagramImage({ event }: { event: eventData }) {
     fontSize: 24,
   };
 
-  const logoStyle: React.CSSProperties = {
-    width: "445px",
-  };
-
-  const containerText: React.CSSProperties = {
-    width: "900px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    gap: "48px",
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={containerText}>
+    <FlexContainer width="1080px" height="1080px" style={containerStyle}>
+      <FlexContainer align="flex-start" justify="flex-start" gap={48}>
         <h1 style={titleStyle}>{event.title}</h1>
         <h3 style={text}>{event.subtitle}</h3>
         <div style={infoContainer}>
@@ -65,14 +44,26 @@ export default function InstagramImage({ event }: { event: eventData }) {
           <p style={text}>{event.address}</p>
           <p style={text}>{event.city}</p>
         </div>
-        <img
-          src={asset("/devpr-logo.png")}
-          width={445}
-          height={105}
-          alt="Logo"
-          style={logoStyle}
-        />
-      </div>
-    </div>
+
+        {Array.isArray(event.talks) && (
+          <FlexContainer align="flex-start" justify="flex-start" gap={12}>
+            <h3>Palestras:</h3>
+            {event.talks.map((talk, index) => (
+              <FlexContainer
+                align="flex-start"
+                justify="flex-start"
+                key={index}
+                gap={0}
+              >
+                <h3 style={{ margin: 0 }}>{talk.title}</h3>
+                <p style={text}>{talk.name}</p>
+              </FlexContainer>
+            ))}
+          </FlexContainer>
+        )}
+
+        <img src={asset("/devpr-logo.png")} width={445} height={105} />
+      </FlexContainer>
+    </FlexContainer>
   );
 }

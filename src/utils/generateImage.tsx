@@ -3,18 +3,17 @@ import { Resvg } from "@resvg/resvg-js";
 import { dirname, join } from "path";
 import { readFile } from "fs/promises";
 import { fileURLToPath } from "url";
-import type { eventData } from "../routes/image.js";
 import { capitalize } from "./capitalize.js";
 import { MEDIA_SIZES } from "../constants/mediaSizes.js";
+import type { EventData } from "../types/event.types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export async function generateImage(event: eventData) {
-  const media = event.media || "instagram";
-  const size = MEDIA_SIZES[media as keyof typeof MEDIA_SIZES];
+export async function generateImage(event: EventData) {
+  const size = MEDIA_SIZES[event.media as keyof typeof MEDIA_SIZES];
 
-  const module = await import(`../layouts/${capitalize(media)}.js`);
+  const module = await import(`../layouts/${capitalize(event.media)}.js`);
   let Component = module.default;
 
   const svg = await satori(<Component event={event} />, {
