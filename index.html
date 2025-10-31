@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaaS - Banner as a Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .api-url-group {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px dashed #ccc;
+        }
+
+        .api-url-group label {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .api-url-group input {
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .image-preview {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 600px;
+            border-radius: Sato;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-preview.empty::before {
+            content: "A imagem aparecerá aqui";
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .loading {
+            position: relative;
+        }
+
+        .loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2ecc71;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #c33;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .talks-help {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .talk-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .talk-item input {
+            margin: 0;
+        }
+
+        .btn-remove-talk {
+            padding: 0.5rem 1rem;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .btn-remove-talk:hover {
+            background: #cc0000;
+        }
+
+        .btn-add-talk:hover {
+            background: #d0d0d0;
+        }
+
+        @media (max-width: 768px) {
+            .talk-item {
+                grid-template-columns: 1fr;
+            }
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 BaaS</h1>
+            <p class="subtitle">Banner as a Service - Gerador de Banners Dinâmicos</p>
+        </header>
+
+        <div class="content">
+            <div class="form-section">
+                <h2 style="margin-bottom: 1rem; color: #333;">Configurações</h2>
+                
+                <div class="api-url-group">
+                    <label for="apiUrl">URL da API:</label>
+                    <input 
+                        type="text" 
+                        id="apiUrl" 
+                        value="http://localhost:3000" 
+                        placeholder="http://localhost:3000 ou https://sua-api.com"
+                    >
+                    <small style="color: #888; font-size: 0.8rem; margin-top: 0.25rem; display: block;">
+                        Configure a URL onde sua API está rodando
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Título *</label>
+                    <input type="text" id="title" placeholder="Ex: Meetup de Desenvolvedores" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subtitle">Subtítulo</label>
+                    <input type="text" id="subtitle" placeholder="Ex: Aprenda as melhores práticas">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Data</label>
+                    <input type="text" id="date" placeholder="Ex: 25 de Janeiro de 2025">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Endereço</label>
+                    <input type="text" id="address" placeholder="Ex: Rua Exemplo, 123">
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Cidade</label>
+                    <input type="text" id="city" placeholder="Ex: Guarapuava">
+                </div>
+
+                <div class="form-group">
+                    <label for="media">Formato da Mídia</label>
+                    <select id="media">
+                        <option value="instagram">Instagram (1080x1080)</option>
+                        <option value="stories">Stories (1080x1920)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Palestras</label>
+                    <div id="talksContainer">
+                        <!-- Palestras serão adicionadas aqui dinamicamente -->
+                    </div>
+                    <button type="button" class="btn-add-talk" onclick="addTalkField()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
+                        + Adicionar Palestra
+                    </button>
+                    <div class="talks-help" style="margin-top: 0.5rem;">
+                        JSON gerado:
+                    </div>
+                    <textarea 
+                        id="talksJson" 
+                        readonly
+                        style="min-height: 80px; background: #f5f5f5; font-family: 'Courier New', monospace; font-size: 0.85rem;"
+                    >[]</textarea>
+                </div>
+
+                <div class="error-message" id="errorMessage"></div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateImage()">Gerar Imagem</button>
+                    <button class="btn-secondary" onclick="downloadImage()">Baixar Imagem</button>
+                    <button class="btn-secondary" onclick="copyCurl(event)">Copiar cURL</button>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <h2 class="preview-title">Preview</h2>
+                <div class="image-preview empty" id="imagePreview">
+                    <!-- Imagem será inserida aqui -->
+                </div>
+                <div id="imageUrl" style="word-break: break-all; font-size: 0.85rem; color: #666; margin-top: 0.5rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentImageUrl = '';
+        let talkCounter = 0;
+
+        function getApiUrl() {
+            return document.getElementById('apiUrl').value.trim() || 'http://localhost:3000';
+        }
+
+        function getTalksData() {
+            const talks = [];
+            const talkItems = document.querySelectorAll('.talk-item');
+            
+            talkItems.forEach(item => {
+                const title = item.querySelector('.talk-title').value.trim();
+                const name = item.querySelector('.talk-name').value.trim();
+                
+                if (title || name) {
+                    talks.push({
+                        title: title || '',
+                        name: name || ''
+                    });
+                }
+            });
+            
+            return talks;
+        }
+
+        function updateTalksJson() {
+            const talks = getTalksData();
+            const jsonTextarea = document.getElementById('talksJson');
+            jsonTextarea.value = JSON.stringify(talks, null, 2);
+        }
+
+        function addTalkField(title = '', name = '') {
+            const container = document.getElementById('talksContainer');
+            const talkId = talkCounter++;
+            
+            const talkItem = document.createElement('div');
+            talkItem.className = 'talk-item';
+            talkItem.id = `talk-${talkId}`;
+            
+            talkItem.innerHTML = `
+                <input 
+                    type="text" 
+                    class="talk-title" 
+                    placeholder="Título da Palestra"
+                    value="${title}"
+                    oninput="updateTalksJson()"
+                >
+                <input 
+                    type="text" 
+                    class="talk-name" 
+                    placeholder="Nome do Palestrante"
+                    value="${name}"
+                    oninput="updateTalksJson()"
+                >
+                <button 
+                    type="button" 
+                    class="btn-remove-talk" 
+                    onclick="removeTalkField(${talkId})"
+                >
+                    Remover
+                </button>
+            `;
+            
+            container.appendChild(talkItem);
+            updateTalksJson();
+        }
+
+        function removeTalkField(talkId) {
+            const talkItem = document.getElementById(`talk-${talkId}`);
+            if (talkItem) {
+                talkItem.remove();
+                updateTalksJson();
+            }
+        }
+
+        function buildImageUrl() {
+            const apiUrl = getApiUrl();
+            const params = new URLSearchParams();
+
+            const title = document.getElementById('title').value;
+            const subtitle = document.getElementById('subtitle').value;
+            const date = document.getElementById('date').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const media = document.getElementById('media').value;
+            const talks = getTalksData();
+
+            if (!title) {
+                showError('O campo Título é obrigatório');
+                return null;
+            }
+
+            if (title) params.append('title', title);
+            if (subtitle) params.append('subtitle', subtitle);
+            if (date) params.append('date', date);
+            if (address) params.append('address', address);
+            if (city) params.append('city', city);
+            if (media) params.append('media', media);
+            if (talks.length > 0) {
+                params.append('talks', JSON.stringify(talks));
+            }
+
+            hideError();
+            return `${apiUrl}/image?${params.toString()}`;
+        }
+
+        function buildCurlCommand() {
+            const imageUrl = buildImageUrl();
+            if (!imageUrl) return null;
+
+            // Versão simplificada - URL completa
+            const escapedUrl = imageUrl.replace(/"/g, '\\"');
+            return `curl "${escapedUrl}" -o banner.png`;
+        }
+
+        function copyCurl(e) {
+            const curlCmd = buildCurlCommand();
+            if (!curlCmd) {
+                showError('Preencha os campos obrigatórios antes de copiar o cURL');
+                return;
+            }
+
+            navigator.clipboard.writeText(curlCmd).then(() => {
+                // Mostrar feedback visual
+                const btn = e.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copiado!';
+                btn.style.background = '#4caf50';
+                btn.style.color = 'white';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                showError('Erro ao copiar: ' + err.message);
+            });
+        }
+
+        async function generateImage() {
+            const imageUrl = buildImageUrl();
+            if (!imageUrl) return;
+
+            const preview = document.getElementById('imagePreview');
+            const urlDisplay = document.getElementById('imageUrl');
+            
+            // Adicionar timestamp para evitar cache
+            const finalUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_t=' + Date.now();
+            currentImageUrl = imageUrl; // Guardar a URL original sem timestamp para download
+            
+            preview.className = 'image-preview loading';
+            preview.innerHTML = '';
+            urlDisplay.textContent = 'Carregando...';
+
+            // Criar a imagem diretamente via URL (evita problemas de CORS)
+            const img = new Image();
+            
+            img.onload = function() {
+                preview.className = 'image-preview';
+                preview.innerHTML = `<img src="${finalUrl}" alt="Banner gerado">`;
+                urlDisplay.innerHTML = `<a href="${imageUrl}" target="_blank" style="color: #2ecc71; text-decoration: none;">🔗 Abrir imagem em nova aba</a>`;
+            };
+            
+            img.onerror = function() {
+                preview.className = 'image-preview empty';
+                preview.innerHTML = '';
+                const apiUrl = getApiUrl();
+                if (apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1')) {
+                    showError(`Erro ao carregar imagem. Certifique-se de que a API está rodando em ${apiUrl} e que os headers CORS estão configurados.`);
+                } else {
+                    showError(`Erro ao carregar imagem de ${apiUrl}. Verifique se a API está acessível e funcionando corretamente.`);
+                }
+                urlDisplay.textContent = '';
+            };
+            
+            // Forçar carregamento
+            img.src = finalUrl;
+        }
+
+        function downloadImage() {
+            if (!currentImageUrl) {
+                showError('Gere uma imagem primeiro antes de baixar');
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.href = currentImageUrl;
+            link.download = `banner-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        // Permitir gerar com Enter nos campos
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        generateImage();
+                    }
+                });
+            });
+            
+            // Atualizar JSON quando qualquer campo mudar
+            const formFields = ['title', 'subtitle', 'date', 'address', 'city', 'media'];
+            formFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', updateTalksJson);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

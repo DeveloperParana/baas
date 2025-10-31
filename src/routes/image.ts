@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import { generateImage } from "../utils/generateImage.js";
 import type { EventData, Talk } from "../types/event.types.js";
 
@@ -22,8 +22,12 @@ function parseEventData(query: EventData): EventData {
   };
 }
 
-router.get("/", async (req, res) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
     const qs = parseEventData(req.query as EventData);
     const pngBuffer = await generateImage(qs as EventData);
 

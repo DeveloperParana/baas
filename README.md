@@ -3,6 +3,12 @@
 BaaS é um serviço simples que gera banners personalizados a partir de uma única rota HTTP `GET`.
 Os dados são enviados via parâmetros de URL, e o servidor retorna uma imagem gerada dinamicamente.
 
+## 🌐 GitHub Pages
+
+Página de demonstração disponível em: **https://developerparana.github.io/baas/**
+
+---
+
 Executando localmente:
 
 1° Clone o repositório
