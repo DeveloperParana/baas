@@ -262,11 +262,12 @@
         }
 
         @media (max-width: 768px) {
-            .talk-item {
-                grid-template-columns: 1fr;
+            body {
+                padding: 1rem;
             }
-            .content {
-                grid-template-columns: 1fr;
+
+            header {
+                margin-bottom: 1.5rem;
             }
 
             h1 {
@@ -275,6 +276,42 @@
 
             .subtitle {
                 font-size: 1rem;
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+
+            .form-section {
+                gap: 1.25rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .talk-item {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .image-preview {
+                min-height: 300px;
+            }
+
+            .image-preview img {
+                max-height: 400px;
+            }
+
+            input, select, textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
             }
         }
     </style>
