@@ -1,0 +1,12 @@
+services:
+  baas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: baas-api
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
