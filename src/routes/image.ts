@@ -1,7 +1,14 @@
 import { Router, type Request, type Response } from "express";
-import { generateImage } from "../../api/_lib/generateImage.jsx";
-import { parseEventData } from "../../api/_lib/parser.js";
-import { CORS_HEADERS, CACHE_HEADERS } from "../../api/_lib/constants.js";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import handler from "../../api/image.js";
+
+const router = Router();
+
+router.get("/", async (req: Request, res: Response) => {
+  await handler(req as unknown as VercelRequest, res as unknown as VercelResponse);
+});
+
+export default router;
 
 const router = Router();
 
