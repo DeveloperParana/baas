@@ -1,4 +1,5 @@
 import satori from "satori";
+import type { SatoriOptions } from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { dirname, join } from "path";
 import { readFile } from "fs/promises";
@@ -65,7 +66,7 @@ export async function generateImage(event: EventData) {
     loadFont("../assets/fonts/Inter-Bold.ttf"),
   ]);
 
-  const svg = await satori(<Component event={event} />, {
+  const svg = await (satori as any)(<Component event={event} />, {
     width: size.width,
     height: size.height,
     fonts: [
