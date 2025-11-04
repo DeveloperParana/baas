@@ -1,0 +1,3 @@
+src/server.ts
+src/routes/**
+src/index.ts
