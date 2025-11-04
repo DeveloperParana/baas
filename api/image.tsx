@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateImage } from './_lib/generateImage.jsx';
+import { generateImage } from './_lib/generateImage.js';
 import { parseEventData } from './_lib/parser.js';
 import { CORS_HEADERS, CACHE_HEADERS } from './_lib/constants.js';
 
