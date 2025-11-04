@@ -1,41 +1,27 @@
 import { Router, type Request, type Response } from "express";
-import { generateImage } from "../utils/generateImage.js";
-import type { EventData, Talk } from "../types/event.types.js";
+import { generateImage } from "../../api/generateImage.jsx";
+import { parseEventData } from "../../api/parser.js";
+import { CORS_HEADERS, CACHE_HEADERS } from "../../api/constants.js";
 
 const router = Router();
 
-function parseEventData(query: EventData): EventData {
-  let talks: Talk[] | undefined;
-
-  if (query.talks) {
-    talks = JSON.parse(String(query.talks));
-  }
-
-  return {
-    title: query.title ?? "",
-    subtitle: query.subtitle ?? "",
-    date: query.date ?? "",
-    address: query.address ?? "",
-    city: query.city ?? "",
-    media: query.media ?? "instagram",
-    talks: talks ?? [],
-  };
-}
-
 router.get("/", async (req: Request, res: Response) => {
   try {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+      res.setHeader(key, value);
+    });
 
-    const qs = parseEventData(req.query as EventData);
-    const pngBuffer = await generateImage(qs as EventData);
+    const eventData = parseEventData(req.query as Record<string, unknown>);
+    const pngBuffer = await generateImage(eventData);
 
-    res.setHeader("Content-Type", "image/png");
+    Object.entries(CACHE_HEADERS).forEach(([key, value]) => {
+      res.setHeader(key, value);
+    });
+
     res.send(pngBuffer);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Erro ao carregar imagem");
+    console.error("Error generating image:", error);
+    res.status(500).json({ error: "Failed to generate image" });
   }
 });
 

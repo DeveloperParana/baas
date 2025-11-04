@@ -1,16 +1,5 @@
 import React from "react";
-
-type FlexContainerProps = {
-  width?: string;
-  height?: string;
-  direction?: "row" | "column";
-  align?: React.CSSProperties["alignItems"];
-  justify?: React.CSSProperties["justifyContent"];
-  gap?: number | string;
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
-  fontSize?: number;
-};
+import type { FlexContainerProps } from "../types.js";
 
 export default function FlexContainer({
   width = "900px",
@@ -28,10 +17,10 @@ export default function FlexContainer({
     flexDirection: direction,
     alignItems: align,
     justifyContent: justify,
-    width: width,
-    height: height,
+    width,
+    height,
     gap,
-    fontSize: fontSize,
+    fontSize,
     boxSizing: "border-box",
     overflowWrap: "break-word",
     wordBreak: "break-word",
