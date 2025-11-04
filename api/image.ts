@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateImage } from '../src/utils/generateImage.js';
-import type { EventData, Talk } from '../src/types/event.types.js';
+import { generateImage } from './lib/utils/generateImage.js';
+import type { EventData, Talk } from './lib/types/event.types.js';
 
 function parseEventData(query: any): EventData {
   let talks: Talk[] | undefined;
