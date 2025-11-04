@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
-import { generateImage } from "../../api/generateImage.jsx";
-import { parseEventData } from "../../api/parser.js";
-import { CORS_HEADERS, CACHE_HEADERS } from "../../api/constants.js";
+import { generateImage } from "../../lib/generateImage.jsx";
+import { parseEventData } from "../../lib/parser.js";
+import { CORS_HEADERS, CACHE_HEADERS } from "../../lib/constants.js";
 
 const router = Router();
 
