@@ -2,7 +2,7 @@
   "functions": {
     "api/image.tsx": {
       "maxDuration": 30,
-      "includeFiles": "api/lib/assets/**"
+      "includeFiles": "lib/**"
     }
   },
   "rewrites": [
