@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/image.ts": {
+    "api/image.tsx": {
       "maxDuration": 30,
       "includeFiles": "api/lib/assets/**"
     }
