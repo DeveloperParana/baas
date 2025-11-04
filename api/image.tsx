@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateImage } from '../lib/generateImage.jsx';
-import { parseEventData } from '../lib/parser.js';
-import { CORS_HEADERS, CACHE_HEADERS } from '../lib/constants.js';
+import { generateImage } from './_lib/generateImage.jsx';
+import { parseEventData } from './_lib/parser.js';
+import { CORS_HEADERS, CACHE_HEADERS } from './_lib/constants.js';
 
 export default async function handler(
   req: VercelRequest,
