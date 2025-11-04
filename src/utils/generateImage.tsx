@@ -10,11 +10,52 @@ import type { EventData } from "../types/event.types.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+async function loadFont(path: string): Promise<Buffer> {
+  const normalizedPath = path.replace(/^\.\.\//, "");
+  
+  const pathsToTry = [
+    join(__dirname, path),
+    join(__dirname, normalizedPath),
+    join(process.cwd(), "src", normalizedPath),
+    join(process.cwd(), "dist", normalizedPath),
+    join(process.cwd(), normalizedPath),
+    join(process.cwd(), "src", "assets", normalizedPath.replace(/^assets\//, "")),
+  ];
+
+  for (const fontPath of pathsToTry) {
+    try {
+      return await readFile(fontPath);
+    } catch (error) {
+      continue;
+    }
+  }
+
+  throw new Error(`Não foi possível carregar a fonte: ${path}. Tentou: ${pathsToTry.join(", ")}`);
+}
+
 export async function generateImage(event: EventData) {
   const size = MEDIA_SIZES[event.media as keyof typeof MEDIA_SIZES];
 
-  const module = await import(`../layouts/${capitalize(event.media)}.js`);
-  let Component = module.default;
+  const layoutName = capitalize(event.media);
+  let Component;
+  
+  try {
+    const module = await import(`../layouts/${layoutName}.js`);
+    Component = module.default;
+  } catch (error) {
+    try {
+      const module = await import(`../layouts/${layoutName}.tsx`);
+      Component = module.default;
+    } catch (error2) {
+      const module = await import(`../layouts/${layoutName}`);
+      Component = module.default;
+    }
+  }
+
+  const [regularFont, boldFont] = await Promise.all([
+    loadFont("../assets/fonts/Inter-Regular.ttf"),
+    loadFont("../assets/fonts/Inter-Bold.ttf"),
+  ]);
 
   const svg = await satori(<Component event={event} />, {
     width: size.width,
@@ -22,15 +63,13 @@ export async function generateImage(event: EventData) {
     fonts: [
       {
         name: "Inter",
-        data: await readFile(
-          join(__dirname, "../assets/fonts/Inter-Regular.ttf")
-        ),
+        data: regularFont,
         weight: 400,
         style: "normal",
       },
       {
         name: "Inter",
-        data: await readFile(join(__dirname, "../assets/fonts/Inter-Bold.ttf")),
+        data: boldFont,
         weight: 700,
         style: "normal",
       },

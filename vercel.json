@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/image.ts": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/image",
+      "destination": "/api/image"
+    }
+  ]
+}
