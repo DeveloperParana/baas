@@ -42,7 +42,8 @@
   },
   "include": [
     "src/**/*",
-    "api/**/*"
+    "api/**/*",
+    "api/_lib/**/*"
   ],
   "exclude": [
     "node_modules",
