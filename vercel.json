@@ -2,7 +2,7 @@
   "functions": {
     "api/image.ts": {
       "maxDuration": 30,
-      "includeFiles": "api/lib/**"
+      "includeFiles": "api/lib/assets/**"
     }
   },
   "rewrites": [
