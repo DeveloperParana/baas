@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/image.tsx": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "api/_lib/**"
     }
   },
   "rewrites": [
